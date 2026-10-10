@@ -1,0 +1,12 @@
+go 1.27.2
+
+// Go workspace tying the three modules together so alice-sender and
+// bob-receiver both build against the SAME local copy of ./common.
+// With these `use` directives, an `import "common"` in either bot resolves
+// to ./common without publishing it anywhere. Run `go work sync` after you
+// add the first real import.
+use (
+	./alice-sender
+	./bob-receiver
+	./common
+)

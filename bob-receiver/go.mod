@@ -2,6 +2,11 @@ module bob-receiver
 
 go 1.27.2
 
+// When this bot imports the shared module (import "common"), add:
+//     require common v0.0.0
+// It resolves locally via ../go.work (no publishing needed).
+// Run `go work sync` / `go mod tidy` after adding the first import.
+
 require (
 	github.com/bwmarrin/discordgo v0.29.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect

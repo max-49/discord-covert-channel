@@ -24,8 +24,9 @@ profile.cov
 # vendor/
 
 # Go workspace file
-go.work
-go.work.sum
+# go.work / go.work.sum are committed on purpose: they tie the alice-sender,
+# bob-receiver, and common modules together with relative paths so both bots
+# share one copy of the codec + feature registry.
 
 # env file
 .env
