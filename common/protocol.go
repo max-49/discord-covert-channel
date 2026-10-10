@@ -24,10 +24,18 @@ package common
 //
 // Planned constants (no code yet — placeholders):
 //   SYNC0 = 0x01 (SOH), SYNC1 = 0x02 (STX)   // start-of-transmission magic
+//                                            // (decided: 2 bytes for now; can
+//                                            //  add SYNC2 later if the channel
+//                                            //  turns out noisy)
 //   END   = 0x03 (ETX)                        // end-of-transmission
-//   Checksum = XOR (or CRC-8) over the payload bytes
-//   SettlingWindow = ~2-3s   // how long Bob waits per message for edits/
-//                            // reactions/thread before decoding the character
+//   Checksum: CRC-8/SMBUS (poly 0x07, init 0x00, no reflection), computed over
+//             the PAYLOAD bytes ONLY — not the SYNC magic and not END. Appended
+//             as the single byte immediately before END. Bob recomputes it over
+//             the bytes he decoded between SYNC and the checksum and compares.
+//             (~10-line bitwise impl; no stdlib crc8. Compute cost is nil vs
+//              the per-message Discord rate-limit latency.)
+//   SettlingWindow = ~2-3s   // only used by the OPTIONAL live mode; the primary
+//                            // decode-later path reads settled state and needs none
 //
 // DECODE MODE: batch / "send now, decode later" (primary).
 //   Bob does NOT decode live. He waits until the transmission has fully settled
